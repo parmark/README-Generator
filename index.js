@@ -1,6 +1,7 @@
 var inquirer = require("inquirer");
 var fs = require("fs")
 var i = 0;
+var data = []
 
 const questions = [
 "Github username?",
@@ -12,7 +13,14 @@ const questions = [
 ];
 
 function writeToFile(fileName, data) {
-
+    data.forEach(element => {
+        fs.appendFile(fileName, element + "\n", function(err) {
+            if (err) {
+                return console.log(err)
+            }
+        }) 
+    });
+    console.log("LOGGED!")
 }
 
 function init() {
@@ -24,10 +32,13 @@ function init() {
                 name: "data"
             }
         ]).then(function(answer) {
-            console.log(answer.data)
+            data[i] = answer.data;
             i++;
             if (i < 6) {
                 init();
+            }
+            else {
+                writeToFile(data[1].toLowerCase().split(" ").join("-") + ".md", data)
             }
         })
 }
