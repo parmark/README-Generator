@@ -1,7 +1,8 @@
 var inquirer = require("inquirer");
 var fs = require("fs")
 var i = 0;
-var data = []
+var data = [];
+var generateMarkdown = require("./utils/generateMarkdown.js");
 
 const questions = [
 "Github username?",
@@ -9,17 +10,26 @@ const questions = [
 "Description?",
 "Table of Contents?",
 "Installation?", 
-"Usage?"
+"Usage?",
+"License?",
+"Contributing",
+"Tests"
 ];
 
 function writeToFile(fileName, data) {
-    data.forEach(element => {
+    /* data.forEach(element => {
         fs.appendFile(fileName, element + "\n", function(err) {
             if (err) {
                 return console.log(err)
             }
         }) 
-    });
+    }); */
+
+    fs.writeFile(fileName, generateMarkdown(data), function(err) {
+        if (err) {
+            return console.log(err)
+        }
+    })
     console.log("LOGGED!")
 }
 
@@ -34,7 +44,7 @@ function init() {
         ]).then(function(answer) {
             data[i] = answer.data;
             i++;
-            if (i < 6) {
+            if (i < 9) {
                 init();
             }
             else {
