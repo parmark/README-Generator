@@ -1,30 +1,46 @@
 var inquirer = require("inquirer");
 var fs = require("fs")
 var i = 0;
-var data = [];
 var generateMarkdown = require("./utils/generateMarkdown.js");
+const questions = [];
+const answers = [];
 
-const questions = [
-"Github username?",
-"Project title?",
-"Description?",
-"Table of Contents?",
-"Installation?", 
-"Usage?",
-"License?",
-"Contributing",
-"Tests"
-];
+const data = {
+    userName: {
+        question: "Github username?",
+        answer: ""
+    },
+    projectTitle: {
+        question: "Project title?",
+        answer: ""
+    },
+    description: {
+        question: "Description?",
+        answer: ""
+    },
+    install: {
+        question: "Installation?",
+        answer: ""
+    }, 
+    usage: {
+        question: "Usage?",
+        answer: ""
+    },
+    license: {
+        question: "License?",
+        answer: ""
+    },
+    contrib: {
+        question: "Contributing?",
+        answer: ""
+    },
+    tests: {
+        question: "Tests?",
+        answer: ""
+    }
+}
 
 function writeToFile(fileName, data) {
-    /* data.forEach(element => {
-        fs.appendFile(fileName, element + "\n", function(err) {
-            if (err) {
-                return console.log(err)
-            }
-        }) 
-    }); */
-
     fs.writeFile(fileName, generateMarkdown(data), function(err) {
         if (err) {
             return console.log(err)
@@ -34,6 +50,15 @@ function writeToFile(fileName, data) {
 }
 
 function init() {
+    
+    for (const [key, value] of Object.entries(data)) {
+        questions.push(value.question)
+    }
+
+    getInput();
+}
+
+function getInput() {
     inquirer
         .prompt([
             {
@@ -42,15 +67,20 @@ function init() {
                 name: "data"
             }
         ]).then(function(answer) {
-            data[i] = answer.data;
+            answers.push(answer.data);
             i++;
-            if (i < 9) {
-                init();
+            if (i < questions.length) {
+                getInput();
             }
             else {
-                writeToFile(data[1].toLowerCase().split(" ").join("-") + ".md", data)
+                let j = 0
+                for (const [key, value] of Object.entries(data)) {
+                    value.answer = answers[j]
+                    j++;
+                }
+                writeToFile(data.projectTitle.answer.toLowerCase().split(" ").join("-") + ".md", data)
             }
-        })
+    })
 }
 
 init();

@@ -1,27 +1,24 @@
 function generateMarkdown(data) {
   return `
-# ${data[1]}
+# ${data.projectTitle.answer}
 
 ## Description
-${data[2]}
-
-## Table of Contents
-${data[3]}
+${data.description.answer}
 
 ## Installation
-${data[4]}
+${data.install.answer}
 
 ## Usage
-${data[5]}
+${data.usage.answer}
 
 ## License
-${data[6]}
+${data.license.answer}
 
 ## Contributing
-${data[7]}
+${data.contrib.answer}
 
 ## Tests
-${data[8]}
+${data.tests.answer}
 
 ## Bio Image
 
