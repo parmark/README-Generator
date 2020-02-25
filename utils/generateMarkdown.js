@@ -1,28 +1,41 @@
-function generateMarkdown(data) {
+function generateMarkdown(data, userInfo) {
+  
   return `
 # ${data.projectTitle.answer}
 
-## Description
+# Table of Contents
+1. [Description](#description)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [License](#license)
+5. [Contributing](#contributing)
+6. [Tests](#tests)
+7. [Questions](#questions)
+
+## Description <a name="description"></a>
 ${data.description.answer}
 
-## Installation
+## Installation <a name="installation"></a>
 ${data.install.answer}
 
-## Usage
+## Usage <a name="usage"></a>
 ${data.usage.answer}
 
-## License
+## License <a name="license"></a>
 ${data.license.answer}
 
-## Contributing
+## Contributing <a name="contributing"></a>
 ${data.contrib.answer}
 
-## Tests
+## Tests <a name="tests"></a> 
 ${data.tests.answer}
 
-## Bio Image
+## Questions <a name="questions"></a>
+### Bio
+![alt text](${userInfo.bioImageURL} "")
+### Email
+${userInfo.userEmail}
 
-## Email Address
 `;
 }
 

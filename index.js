@@ -1,5 +1,6 @@
 var inquirer = require("inquirer");
 var fs = require("fs")
+var axios = require("axios");
 var generateMarkdown = require("./utils/generateMarkdown.js");
 
 const data = {
@@ -37,8 +38,24 @@ const data = {
     }
 }
 
-function writeToFile(fileName, data) {
-    fs.writeFile(fileName, generateMarkdown(data), function(err) {
+const userInfo = {
+    bioImageURL: "",
+    userEmail: ""
+}
+
+async function writeToFile(fileName, data) {
+    try {
+        await axios
+            .get(`https://api.github.com/users/${data.userName.answer}`)
+            .then(function(res) {
+                userInfo.bioImageURL = res.data.avatar_url
+                userInfo.userEmail = res.data.email
+        });
+    } catch (err) {
+        console.log(err)
+    }
+    
+    fs.writeFile(fileName, generateMarkdown(data, userInfo), function(err) {
         if (err) {
             return console.log(err)
         }
@@ -47,7 +64,6 @@ function writeToFile(fileName, data) {
 }
 
 function init() {
-    
     const questionArray = [];
     const answerArray = [];
     var iterator = 0;
