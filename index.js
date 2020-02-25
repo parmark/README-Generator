@@ -1,9 +1,6 @@
 var inquirer = require("inquirer");
 var fs = require("fs")
-var i = 0;
 var generateMarkdown = require("./utils/generateMarkdown.js");
-const questions = [];
-const answers = [];
 
 const data = {
     userName: {
@@ -51,14 +48,18 @@ function writeToFile(fileName, data) {
 
 function init() {
     
+    const questionArray = [];
+    const answerArray = [];
+    var iterator = 0;
+
     for (const [key, value] of Object.entries(data)) {
-        questions.push(value.question)
+        questionArray.push(value.question)
     }
 
-    getInput();
+    getInput(questionArray, answerArray, iterator);
 }
 
-function getInput() {
+function getInput(questions, answers, i) {
     inquirer
         .prompt([
             {
@@ -70,7 +71,7 @@ function getInput() {
             answers.push(answer.data);
             i++;
             if (i < questions.length) {
-                getInput();
+                getInput(questions, answers, i);
             }
             else {
                 let j = 0
